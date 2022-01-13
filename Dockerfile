@@ -14,7 +14,7 @@ RUN apt-get update && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy --no-install-recommends \
     curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip
 
-RUN curl -sSL https://get.docker.com/ | s
+RUN curl -sSL https://get.docker.com/ | sh
 
 # cd into the user directory, download and unzip the github actions runner
 RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
