@@ -7,7 +7,7 @@ ARG RUNNER_VERSION="2.286.0"
 # update the base packages and add a non-sudo user
 RUN apt-get update && \
     apt-get -qy full-upgrade && \
-    mkdir -p /home/docker
+    mkdir -p /app
 
 # install python and the packages the your code depends on along with jq so we can parse JSON
 # add additional packages as necessary
@@ -17,13 +17,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy --no-install-recommends \
 RUN curl -sSL https://get.docker.com/ | sh
 
 # cd into the user directory, download and unzip the github actions runner
-RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
+RUN cd /app && mkdir actions-runner && cd actions-runner \
     && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
     && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
 # install some additional dependencies
-RUN chown -R docker /home/docker && \
-    /home/docker/actions-runner/bin/installdependencies.sh
+RUN /app/actions-runner/bin/installdependencies.sh
 
 # copy over the start.sh script
 COPY start.sh start.sh
